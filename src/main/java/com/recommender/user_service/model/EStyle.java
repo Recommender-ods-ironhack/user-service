@@ -1,4 +1,4 @@
-package com.recommender.user_service.Model;
+package com.recommender.user_service.model;
 
 public enum EStyle {
     CASUAL,
