@@ -18,12 +18,12 @@ public class User {
 
     private String name;
 
-    @ElementCollection(targetClass = ESize.class)
+    @ElementCollection(targetClass = EStyle.class)
     @Enumerated(EnumType.STRING)
     @Column(name = "style")
     private List<EStyle> styles;
 
-    @ElementCollection(targetClass = EStyle.class)
+    @ElementCollection(targetClass = ESize.class)
     @Enumerated(EnumType.STRING)
     @Column(name = "size")
     private List<ESize> sizes;
