@@ -1,5 +1,6 @@
 package com.recommender.user_service.controller;
 
+import com.recommender.user_service.DTO.UserPatchDTO;
 import com.recommender.user_service.exceptions.UserNotFoundException;
 import com.recommender.user_service.model.User;
 import com.recommender.user_service.service.UserService;
@@ -31,6 +32,26 @@ public class UserController {
         return ResponseEntity.ok(savedUser);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody UserPatchDTO userDTO){
+        try {
+            User foundUser = userService.patchUser(id, userDTO);
+            return ResponseEntity.ok(foundUser);
+        } catch (UserNotFoundException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        try{
+            User deletedUser = userService.deleteUser(id);
+            String message = "Deleted user: " + deletedUser.getName();
+            return ResponseEntity.ok(message);
+        } catch (UserNotFoundException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+
+    }
 
 }
