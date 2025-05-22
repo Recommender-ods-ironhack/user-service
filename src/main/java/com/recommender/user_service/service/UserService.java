@@ -1,6 +1,7 @@
 package com.recommender.user_service.service;
 
 import com.recommender.user_service.DTO.UserPatchDTO;
+import com.recommender.user_service.exceptions.UserNotFoundException;
 import com.recommender.user_service.model.User;
 import com.recommender.user_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User getById(Long id){
-        //TODO crear excepción personalizada
+    public User getUserById(Long id){
         var user= userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
+                .orElseThrow(() -> new UserNotFoundException(id));
         return user;
     }
 
@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public User patchUser(Long id, UserPatchDTO userPatchDTO){
-        User existingUser = getById(id);
+        User existingUser = getUserById(id);
 
         if(userPatchDTO.getName()!= null){
             existingUser.setName(userPatchDTO.getName());
@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public User deleteUser(Long id){
-        var user= getById(id);
+        var user= getUserById(id);
         userRepository.deleteById(id);
         return user;
     }
