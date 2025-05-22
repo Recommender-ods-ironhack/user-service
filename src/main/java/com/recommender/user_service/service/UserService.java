@@ -1,5 +1,6 @@
 package com.recommender.user_service.service;
 
+import com.recommender.user_service.DTO.UserPatchDTO;
 import com.recommender.user_service.model.User;
 import com.recommender.user_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User getById(Long id){
+        //TODO crear excepción personalizada
         var user= userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
         return user;
@@ -20,9 +22,26 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User patchUser(Long id, UserPatchDTO userPatchDTO){
+        User existingUser = getById(id);
+
+        if(userPatchDTO.getName()!= null){
+            existingUser.setName(userPatchDTO.getName());
+        }
+
+        if (userPatchDTO.getSizes()!= null){
+            existingUser.setSizes(userPatchDTO.getSizes());
+        }
+
+        if (userPatchDTO.getStyles()!= null){
+            existingUser.setStyles(userPatchDTO.getStyles());
+        }
+
+        return userRepository.save(existingUser);
+    }
+
     public User deleteUser(Long id){
-        var user= userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
+        var user= getById(id);
         userRepository.deleteById(id);
         return user;
     }
