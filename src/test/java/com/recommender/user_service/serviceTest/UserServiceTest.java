@@ -73,7 +73,6 @@ public class UserServiceTest {
         assertEquals(ESize.XS, savedUser.getSizes().getFirst());
         assertTrue(savedUser.getStyles().containsAll(List.of(EStyle.BOHEMIAN, EStyle.FORMAL)));
 
-
     }
 
     @Test
@@ -91,6 +90,8 @@ public class UserServiceTest {
         assertThrows(UserNotFoundException.class, () -> {
             userService.getUserById(savedUser.getId());
         });
+        assertNotNull(delUser);
+        assertEquals(savedUser.getId(), delUser.getId());
     }
 
 
